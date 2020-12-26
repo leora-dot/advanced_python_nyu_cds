@@ -52,12 +52,16 @@ def compute_mag(dt, dx, dy, dz):
     return dt * ((dx * dx + dy * dy + dz * dz) ** (-1.5))
 
 def update_vs(v1, v2, dt, dx, dy, dz, m1, m2):
-    v1[0] -= dx * compute_b(m2, dt, dx, dy, dz)
-    v1[1] -= dy * compute_b(m2, dt, dx, dy, dz)
-    v1[2] -= dz * compute_b(m2, dt, dx, dy, dz)
-    v2[0] += dx * compute_b(m1, dt, dx, dy, dz)
-    v2[1] += dy * compute_b(m1, dt, dx, dy, dz)
-    v2[2] += dz * compute_b(m1, dt, dx, dy, dz)
+
+    b1 = compute_b(m2, dt, dx, dy, dz) #NOT A TYPO: B1 DOES TAKE M2
+    b2 = compute_b(m1, dt, dx, dy, dz) #NOT A TYPO: B1 DOES TAKE M2
+
+    v1[0] -= dx * b1
+    v1[1] -= dy * b1
+    v1[2] -= dz * b1
+    v2[0] += dx * b2
+    v2[1] += dy * b2
+    v2[2] += dz * b2
 
 def update_rs(r, dt, vx, vy, vz):
     r[0] += dt * vx
