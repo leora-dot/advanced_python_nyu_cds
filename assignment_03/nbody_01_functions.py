@@ -1,3 +1,5 @@
+from time import perf_counter
+
 """
     N-body simulation.
 """
@@ -143,4 +145,17 @@ def nbody(loops, reference, iterations):
         print(report_energy())
 
 if __name__ == '__main__':
-    nbody(100, 'sun', 20000)
+
+    num_tests = 3
+    times = []
+
+    for i in range(num_tests):
+        time_start = perf_counter()
+        nbody(100, 'sun', 20000)
+        time_end = perf_counter()
+
+        time_elapsed = time_end - time_start
+        times.append(time_elapsed)
+
+    time_best = min(times)
+    print("Best Run: {:.2f}".format(time_best))
