@@ -53,8 +53,8 @@ def compute_mag(dt, dx, dy, dz):
 
 def update_vs(v1, v2, dt, dx, dy, dz, m1, m2):
 
-    b1 = compute_b(m2, dt, dx, dy, dz) #NOT A TYPO: B1 DOES TAKE M2
-    b2 = compute_b(m1, dt, dx, dy, dz) #NOT A TYPO: B1 DOES TAKE M2
+    b1 = compute_b(m2, dt, dx, dy, dz) #NOT A TYPO: B1 DOES TAKE M2 & B2 DOES TAKE M1
+    b2 = compute_b(m1, dt, dx, dy, dz) #NOT A TYPO: B1 DOES TAKE M2 & B2 DOES TAKE M1
 
     v1[0] -= dx * b1
     v1[1] -= dy * b1
