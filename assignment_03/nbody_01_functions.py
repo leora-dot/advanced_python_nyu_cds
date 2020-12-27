@@ -91,9 +91,6 @@ def advance(dt, loops, iterations):
 
         print(report_energy())
 
-def compute_energy(m1, m2, dx, dy, dz):
-    return (m1 * m2) / ((dx * dx + dy * dy + dz * dz) ** 0.5)
-
 def report_energy(e=0.0):
     '''
         compute the energy and return it so that it can be printed
@@ -105,7 +102,7 @@ def report_energy(e=0.0):
                 ((x1, y1, z1), v1, m1) = BODIES[body1]
                 ((x2, y2, z2), v2, m2) = BODIES[body2]
                 (dx, dy, dz) = compute_deltas(x1, x2, y1, y2, z1, z2)
-                e -= compute_energy(m1, m2, dx, dy, dz)
+                e -= (m1 * m2) / ((dx * dx + dy * dy + dz * dz) ** 0.5)
                 seenit.append(body1)
 
     for body in BODIES.keys():
