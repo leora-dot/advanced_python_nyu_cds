@@ -135,7 +135,6 @@ def nbody(loops, reference, iterations):
     offset_momentum(BODIES[reference])
 
     for _ in range(loops):
-        report_energy()
         for _ in range(iterations):
             advance(0.01)
         print(report_energy())
