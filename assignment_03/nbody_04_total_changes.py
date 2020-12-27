@@ -79,7 +79,8 @@ def advance(dt, loops, iterations):
         for _ in range(iterations):
 
             for combination in combinations(BODIES.keys(), 2):
-                body1, body2 = combination[0], combination[1]
+                body1 = combination[0]
+                body2 = combination[1]
                 ([x1, y1, z1], v1, m1) = BODIES[body1]
                 ([x2, y2, z2], v2, m2) = BODIES[body2]
                 (dx, dy, dz) = compute_deltas(x1, x2, y1, y2, z1, z2)
@@ -100,7 +101,8 @@ def report_energy(e=0.0):
     '''
 
     for combination in combinations(BODIES.keys(), 2):
-        body1, body2 = combination[0], combination[1]
+        body1 = combination[0]
+        body2 = combination[1]
         ((x1, y1, z1), v1, m1) = BODIES[body1]
         ((x2, y2, z2), v2, m2) = BODIES[body2]
         (dx, dy, dz) = compute_deltas(x1, x2, y1, y2, z1, z2)
