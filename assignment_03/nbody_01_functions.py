@@ -47,11 +47,8 @@ def compute_deltas(x1, x2, y1, y2, z1, z2):
     return (x1-x2, y1-y2, z1-z2)
 
 def compute_b(m, dt, dx, dy, dz):
-    mag = compute_mag(dt, dx, dy, dz)
+    mag = dt * ((dx * dx + dy * dy + dz * dz) ** (-1.5))
     return m * mag
-
-def compute_mag(dt, dx, dy, dz):
-    return dt * ((dx * dx + dy * dy + dz * dz) ** (-1.5))
 
 def update_vs(v1, v2, dt, dx, dy, dz, m1, m2):
 
