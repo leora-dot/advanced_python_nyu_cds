@@ -1,4 +1,5 @@
 from time import perf_counter
+from itertools import combinations
 
 """
     N-body simulation.
@@ -54,35 +55,41 @@ def compute_mag(dt, dx, dy, dz):
     return dt * ((dx * dx + dy * dy + dz * dz) ** (-1.5))
 
 def update_vs(v1, v2, dt, dx, dy, dz, m1, m2):
-    v1[0] -= dx * compute_b(m2, dt, dx, dy, dz)
-    v1[1] -= dy * compute_b(m2, dt, dx, dy, dz)
-    v1[2] -= dz * compute_b(m2, dt, dx, dy, dz)
-    v2[0] += dx * compute_b(m1, dt, dx, dy, dz)
-    v2[1] += dy * compute_b(m1, dt, dx, dy, dz)
-    v2[2] += dz * compute_b(m1, dt, dx, dy, dz)
+
+    b1 = compute_b(m2, dt, dx, dy, dz) #NOT A TYPO: B1 DOES TAKE M2 & B2 DOES TAKE M1
+    b2 = compute_b(m1, dt, dx, dy, dz) #NOT A TYPO: B1 DOES TAKE M2 & B2 DOES TAKE M1
+
+    v1[0] -= dx * b1
+    v1[1] -= dy * b1
+    v1[2] -= dz * b1
+    v2[0] += dx * b2
+    v2[1] += dy * b2
+    v2[2] += dz * b2
 
 def update_rs(r, dt, vx, vy, vz):
     r[0] += dt * vx
     r[1] += dt * vy
     r[2] += dt * vz
 
-def advance(dt):
+def advance(dt, loops, iterations):
     '''
         advance the system one timestep
     '''
-    seenit = []
-    for body1 in BODIES.keys():
-        for body2 in BODIES.keys():
-            if (body1 != body2) and not (body2 in seenit):
+    for _ in range(loops):
+        for _ in range(iterations):
+
+            for combination in combinations(BODIES.keys(), 2):
+                body1, body2 = combination[0], combination[1]
                 ([x1, y1, z1], v1, m1) = BODIES[body1]
                 ([x2, y2, z2], v2, m2) = BODIES[body2]
                 (dx, dy, dz) = compute_deltas(x1, x2, y1, y2, z1, z2)
                 update_vs(v1, v2, dt, dx, dy, dz, m1, m2)
-                seenit.append(body1)
 
-    for body in BODIES.keys():
-        (r, [vx, vy, vz], m) = BODIES[body]
-        update_rs(r, dt, vx, vy, vz)
+            for body in BODIES.keys():
+                (r, [vx, vy, vz], m) = BODIES[body]
+                update_rs(r, dt, vx, vy, vz)
+
+        print(report_energy())
 
 def compute_energy(m1, m2, dx, dy, dz):
     return (m1 * m2) / ((dx * dx + dy * dy + dz * dz) ** 0.5)
@@ -91,15 +98,13 @@ def report_energy(e=0.0):
     '''
         compute the energy and return it so that it can be printed
     '''
-    seenit = []
-    for body1 in BODIES.keys():
-        for body2 in BODIES.keys():
-            if (body1 != body2) and not (body2 in seenit):
-                ((x1, y1, z1), v1, m1) = BODIES[body1]
-                ((x2, y2, z2), v2, m2) = BODIES[body2]
-                (dx, dy, dz) = compute_deltas(x1, x2, y1, y2, z1, z2)
-                e -= compute_energy(m1, m2, dx, dy, dz)
-                seenit.append(body1)
+
+    for combination in combinations(BODIES.keys(), 2):
+        body1, body2 = combination[0], combination[1]
+        ((x1, y1, z1), v1, m1) = BODIES[body1]
+        ((x2, y2, z2), v2, m2) = BODIES[body2]
+        (dx, dy, dz) = compute_deltas(x1, x2, y1, y2, z1, z2)
+        e -= compute_energy(m1, m2, dx, dy, dz)
 
     for body in BODIES.keys():
         (r, [vx, vy, vz], m) = BODIES[body]
@@ -133,12 +138,7 @@ def nbody(loops, reference, iterations):
     '''
     # Set up global state
     offset_momentum(BODIES[reference])
-
-    for _ in range(loops):
-        report_energy()
-        for _ in range(iterations):
-            advance(0.01)
-        print(report_energy())
+    advance(0.01, loops, iterations)
 
 if __name__ == '__main__':
 
