@@ -1,4 +1,4 @@
-from time import perf_counter
+import timeit
 from itertools import combinations
 
 """
@@ -138,18 +138,18 @@ def nbody(loops, reference, iterations):
             advance(0.01)
         print(report_energy())
 
+def wrapped_test_function():
+    nbody(100, 'sun', 20000)
+
 if __name__ == '__main__':
 
-    num_tests = 3
-    times = []
+    time_best = None
+    num_tests = 1
 
     for i in range(num_tests):
-        time_start = perf_counter()
-        nbody(100, 'sun', 20000)
-        time_end = perf_counter()
-
-        time_elapsed = time_end - time_start
-        times.append(time_elapsed)
-
-    time_best = min(times)
+        time_current = timeit.timeit("wrapped_test_function()", number = num_tests, globals=globals())
+        if time_best:
+            time_best = min(time_best, time_current)
+        else:
+            time_best = time_current
     print("Best Run: {:.2f}".format(time_best))
