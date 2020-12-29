@@ -53,7 +53,11 @@ def compute_b(m, dt, dx, dy, dz):
 def compute_mag(dt, dx, dy, dz):
     return dt * ((dx * dx + dy * dy + dz * dz) ** (-1.5))
 
-def update_vs(v1, v2, dt, dx, dy, dz, m1, m2):
+def update_vs(v1, v2, dt, dx, dy, dz, m1, m2, bodies_data, body1, body2):
+
+    ([x1, y1, z1], v1, m1) = bodies_data[body1]
+    ([x2, y2, z2], v2, m2) = bodies_data[body2]
+
     v1[0] -= dx * compute_b(m2, dt, dx, dy, dz)
     v1[1] -= dy * compute_b(m2, dt, dx, dy, dz)
     v1[2] -= dz * compute_b(m2, dt, dx, dy, dz)
@@ -61,61 +65,65 @@ def update_vs(v1, v2, dt, dx, dy, dz, m1, m2):
     v2[1] += dy * compute_b(m1, dt, dx, dy, dz)
     v2[2] += dz * compute_b(m1, dt, dx, dy, dz)
 
-def update_rs(r, dt, vx, vy, vz):
+    return bodies_data
+
+def update_rs(dt, bodies_data, body):
+    (r, [vx, vy, vz], m) = bodies_data[body]
     r[0] += dt * vx
     r[1] += dt * vy
     r[2] += dt * vz
 
-def advance(dt):
+    return bodies_data
+
+def advance(dt, bodies_data):
     '''
         advance the system one timestep
     '''
     seenit = []
-    body_names = BODIES.keys()
+    body_names = bodies_data.keys()
     for body1 in body_names:
         for body2 in body_names:
             if (body1 != body2) and not (body2 in seenit):
-                ([x1, y1, z1], v1, m1) = BODIES[body1]
-                ([x2, y2, z2], v2, m2) = BODIES[body2]
+                ([x1, y1, z1], v1, m1) = bodies_data[body1]
+                ([x2, y2, z2], v2, m2) = bodies_data[body2]
                 (dx, dy, dz) = compute_deltas(x1, x2, y1, y2, z1, z2)
-                update_vs(v1, v2, dt, dx, dy, dz, m1, m2)
+                bodies_data = update_vs(v1, v2, dt, dx, dy, dz, m1, m2, bodies_data, body1, body2)
                 seenit.append(body1)
 
     for body in body_names:
-        (r, [vx, vy, vz], m) = BODIES[body]
-        update_rs(r, dt, vx, vy, vz)
+        bodies_data = update_rs(dt, bodies_data, body)
 
 def compute_energy(m1, m2, dx, dy, dz):
     return (m1 * m2) / ((dx * dx + dy * dy + dz * dz) ** 0.5)
 
-def report_energy(e=0.0):
+def report_energy(bodies_data, e=0.0):
     '''
         compute the energy and return it so that it can be printed
     '''
     seenit = []
-    body_names = BODIES.keys()
+    body_names = bodies_data.keys()
     for body1 in body_names:
         for body2 in body_names:
             if (body1 != body2) and not (body2 in seenit):
-                ((x1, y1, z1), v1, m1) = BODIES[body1]
-                ((x2, y2, z2), v2, m2) = BODIES[body2]
+                ((x1, y1, z1), v1, m1) = bodies_data[body1]
+                ((x2, y2, z2), v2, m2) = bodies_data[body2]
                 (dx, dy, dz) = compute_deltas(x1, x2, y1, y2, z1, z2)
                 e -= compute_energy(m1, m2, dx, dy, dz)
                 seenit.append(body1)
 
     for body in body_names:
-        (r, [vx, vy, vz], m) = BODIES[body]
+        (r, [vx, vy, vz], m) = bodies_data[body]
         e += m * (vx * vx + vy * vy + vz * vz) / 2.
 
     return e
 
-def offset_momentum(ref, px=0.0, py=0.0, pz=0.0):
+def offset_momentum(ref, bodies_data, px=0.0, py=0.0, pz=0.0):
     '''
         ref is the body in the center of the system
         offset values from this reference
     '''
-    for body in BODIES.keys():
-        (r, [vx, vy, vz], m) = BODIES[body]
+    for body in bodies_data.keys():
+        (r, [vx, vy, vz], m) = bodies_data[body]
         px -= vx * m
         py -= vy * m
         pz -= vz * m
@@ -125,8 +133,9 @@ def offset_momentum(ref, px=0.0, py=0.0, pz=0.0):
     v[1] = py / m
     v[2] = pz / m
 
+    return bodies_data
 
-def nbody(loops, reference, iterations):
+def nbody(loops, reference, iterations, bodies_data):
     '''
         nbody simulation
         loops - number of loops to run
@@ -134,13 +143,13 @@ def nbody(loops, reference, iterations):
         iterations - number of timesteps to advance
     '''
     # Set up global state
-    offset_momentum(BODIES[reference])
+    bodies_data = offset_momentum(bodies_data[reference], bodies_data)
 
     for _ in range(loops):
-        report_energy()
+        report_energy(bodies_data)
         for _ in range(iterations):
-            advance(0.01)
-        print(report_energy())
+            advance(0.01, bodies_data)
+        print(report_energy(bodies_data))
 
 if __name__ == '__main__':
 
@@ -149,11 +158,10 @@ if __name__ == '__main__':
 
     for i in range(num_tests):
         time_start = perf_counter()
-        nbody(100, 'sun', 20000)
+        nbody(100, 'sun', 20000, BODIES)
         time_end = perf_counter()
 
         time_elapsed = time_end - time_start
         times.append(time_elapsed)
 
     time_best = min(times)
-    print("Best Run: {:.2f}".format(time_best))
