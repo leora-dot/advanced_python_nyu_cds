@@ -49,7 +49,7 @@ def compute_deltas(x1, x2, y1, y2, z1, z2):
 
 def compute_b(m, dt, dx, dy, dz):
     mag = dt * ((dx * dx + dy * dy + dz * dz) ** (-1.5))
-    #mag = dt * sum([d **2 for d in [dx, dy, dz]]) ** (-1.5)
+    #mag = dt * (sum([d * d for d in [dx, dy, dz]]) ** (-1.5))
     return m * mag
 
 def update_vs(v1, v2, dt, dx, dy, dz, m1, m2, bodies_data, body1, body2):
@@ -106,11 +106,11 @@ def report_energy(bodies_data, e=0.0):
         ((x1, y1, z1), v1, m1) = bodies_data[body1]
         ((x2, y2, z2), v2, m2) = bodies_data[body2]
         (dx, dy, dz) = compute_deltas(x1, x2, y1, y2, z1, z2)
-        e -= (m1 * m2) / ((dx * dx + dy * dy + dz * dz) ** 0.5)
+        e -= (m1 * m2) / (sum([d * d for d in [dx, dy, dz]]) ** 0.5)
 
     for body in body_names:
         (r, [vx, vy, vz], m) = bodies_data[body]
-        e += m * (vx * vx + vy * vy + vz * vz) / 2.
+        e += m * sum(v*v for v in [vx, vy, vz]) / 2.
 
     return e
 

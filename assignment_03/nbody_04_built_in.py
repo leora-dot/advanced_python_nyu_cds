@@ -52,7 +52,7 @@ def compute_b(m, dt, dx, dy, dz):
 
 def compute_mag(dt, dx, dy, dz):
     return dt * ((dx * dx + dy * dy + dz * dz) ** (-1.5))
-    #return dt * sum([d **2 for d in [dx, dy, dz]]) ** (-1.5)
+    #return dt * (sum([d * d for d in [dx, dy, dz]]) ** (-1.5))
 
 def update_vs(v1, v2, dt, dx, dy, dz, m1, m2):
     v1[0] -= dx * compute_b(m2, dt, dx, dy, dz)
@@ -86,7 +86,7 @@ def advance(dt):
         update_rs(r, dt, vx, vy, vz)
 
 def compute_energy(m1, m2, dx, dy, dz):
-    return (m1 * m2) / ((dx * dx + dy * dy + dz * dz) ** 0.5)
+    return (m1 * m2) / (sum([d * d for d in [dx, dy, dz]]) ** 0.5)
 
 def report_energy(e=0.0):
     '''
@@ -104,7 +104,7 @@ def report_energy(e=0.0):
 
     for body in BODIES.keys():
         (r, [vx, vy, vz], m) = BODIES[body]
-        e += m * (vx * vx + vy * vy + vz * vz) / 2.
+        e += m * sum(v*v for v in [vx, vy, vz]) / 2.
 
     return e
 
