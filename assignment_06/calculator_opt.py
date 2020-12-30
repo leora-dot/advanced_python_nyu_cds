@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 # calculator.py
-# ----------------------------------------------------------------------------- 
+# -----------------------------------------------------------------------------
 import numpy as np
 
 def add(x,y):
@@ -8,12 +8,7 @@ def add(x,y):
     Add two arrays using a Python loop.
     x and y must be two-dimensional arrays of the same shape.
     """
-    m,n = x.shape
-    z = np.zeros((m,n))
-    for i in range(m):
-        for j in range(n):
-            z[i,j] = x[i,j] + y[i,j]
-    return z
+    return np.add(x, y)
 
 
 def multiply(x,y):
@@ -21,25 +16,14 @@ def multiply(x,y):
     Multiply two arrays using a Python loop.
     x and y must be two-dimensional arrays of the same shape.
     """
-    m,n = x.shape
-    z = np.zeros((m,n))
-    for i in range(m):
-        for j in range(n):
-            z[i,j] = x[i,j] * y[i,j]
-    return z
+    return np.multiply(x, y)
 
 
 def sqrt(x):
     """
     Take the square root of the elements of an arrays using a Python loop.
     """
-    from math import sqrt
-    m,n = x.shape
-    z = np.zeros((m,n))
-    for i in range(m):
-        for j in range(n):
-            z[i,j] = sqrt(x[i,j])
-    return z
+    return np.sqrt(x)
 
 
 def hypotenuse(x,y):
