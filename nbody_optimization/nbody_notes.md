@@ -9,3 +9,9 @@ The files are as follows:
    - nbody_03_looping: this version contains changes designed to reduce the amount of work done in loops.
    - nbody_04_built_in: this version contains changes designed to utilize built in functionalities. There is one change that didn't perform right, so I left it as a comment until I can debug.
    - nbody_opt_03: compiles all the changes into a single optimized program.
+
+# Assignment 5 Notes
+
+The files are as follows:
+   - nbody_05_itertools: the script has been modified to use itertools.
+   - nbody_opt_05: compiles all the changes into a single opptimized program.
