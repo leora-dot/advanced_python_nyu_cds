@@ -7,9 +7,9 @@ Write a program that takes two arguments n and k and prints all binary strings o
 def zbits(n, k):
     num_ones = n-k
     products = itertools.product(range(2), repeat=n)
-    tups = [prod for prod in products if sum(prod) == num_ones]
+    tuple_list = [prod for prod in products if sum(prod) == num_ones]
 
-    for tup in tups:
+    for tup in tuple_list:
         print(''.join(str(x) for x in tup))
 
 ##TESTING
