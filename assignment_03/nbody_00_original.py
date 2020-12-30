@@ -145,13 +145,10 @@ def wrapped_test_function():
 
 if __name__ == '__main__':
 
-    time_best = None
     num_tests = 1
+    num_repeats = 3
 
-    for i in range(num_tests):
-        time_current = timeit.timeit("wrapped_test_function()", number = num_tests, globals=globals())
-        if time_best:
-            time_best = min(time_best, time_current)
-        else:
-            time_best = time_current
-    print("Best Run: {:.2f}".format(time_best))
+    time_vector = timeit.repeat("wrapped_test_function()", number = num_tests, repeat = num_repeats, globals=globals())
+    time_best = min(time_vector)
+
+    print("Best Time: {:.2f}".format(time_best))
