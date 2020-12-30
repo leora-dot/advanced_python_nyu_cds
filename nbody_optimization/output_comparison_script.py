@@ -16,7 +16,7 @@ def is_identical(iteration_num_1, iteration_num_2):
         2: "output_02_variables.txt",
         3: "output_03_looping.txt",
         4: "output_04_built_in.txt",
-        5: "output_05_total_changes.txt"}
+        "opt_03": "nbody_opt_03.txt"}
 
     filename_01, filename_02 = filename_dict[iteration_num_1], filename_dict[iteration_num_2]
     list_01, list_02 = open(filename_01).readlines(  ), open(filename_02).readlines(  )
