@@ -1,0 +1,4 @@
+Instructions: https://github.com/nuncjo/cython-installation-windows
+Instructions: http://docs.cython.org/en/latest/src/tutorial/appendix.html
+
+New File Location: C:\Users\Leora Rosenberg\miniconda3\Lib\distutils
