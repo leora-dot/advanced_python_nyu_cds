@@ -15,3 +15,11 @@ The files are as follows:
 The files are as follows:
    - nbody_05_itertools: the script has been modified to use itertools.
    - nbody_opt_05: compiles all the changes into a single opptimized program.
+
+#Assignment 7 Notes:
+
+I gave up on installing and configuring Cython for the moment. This has taken up too much time. If I want to come back to it, the files are as follows:
+
+The files are as follows:
+   - nbody_cython converts the program from nbody_opt_05 into Cython.
+   - nbody_cython_testing.ipynb imports the program into a jupyter notebook. 
