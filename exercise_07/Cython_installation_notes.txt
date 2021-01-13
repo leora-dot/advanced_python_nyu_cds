@@ -1,4 +1,8 @@
+Cython:
+
 Instructions: https://github.com/nuncjo/cython-installation-windows
 Instructions: http://docs.cython.org/en/latest/src/tutorial/appendix.html
+
+Additional Instructions: https://stackoverflow.com/questions/24117796/cython-pyximport-importerror-building-module-function-failed-distutilsplat
 
 New File Location: C:\Users\Leora Rosenberg\miniconda3\Lib\distutils
