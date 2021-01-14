@@ -1,5 +1,4 @@
 import timeit
-from itertools import combinations
 
 """
     N-body simulation.
@@ -44,6 +43,19 @@ BODIES = {
                  -9.51592254519715870e-05 * DAYS_PER_YEAR],
                 5.15138902046611451e-05 * SOLAR_MASS)}
 
+def combinations_r2(iterable):
+    combination_list = []
+    num_items = len(iterable)
+
+    for i in range(num_items):
+        if i < num_items:
+            val1 = iterable[i]
+            for val2 in iterable[i + 1:]:
+                tup = (val1, val2)
+                combination_list.append(tup)
+
+    return combination_list
+
 def compute_deltas(x1, x2, y1, y2, z1, z2):
     return (x1-x2, y1-y2, z1-z2)
 
@@ -78,11 +90,11 @@ def advance(dt, loops, iterations, bodies_data):
     '''
         advance the system one timestep
     '''
-    body_names = bodies_data.keys()
+    body_names = list(bodies_data.keys())
     for _ in range(loops):
         for _ in range(iterations):
 
-            for combination in combinations(body_names, 2):
+            for combination in combinations_r2(body_names):
                 body1 = combination[0]
                 body2 = combination[1]
                 ([x1, y1, z1], v1, m1) = bodies_data[body1]
@@ -99,8 +111,8 @@ def report_energy(bodies_data, e=0.0):
     '''
         compute the energy and return it so that it can be printed
     '''
-    body_names = bodies_data.keys()
-    for combination in combinations(body_names, 2):
+    body_names = list(bodies_data.keys())
+    for combination in combinations_r2(body_names):
         body1 = combination[0]
         body2 = combination[1]
         ((x1, y1, z1), v1, m1) = bodies_data[body1]
