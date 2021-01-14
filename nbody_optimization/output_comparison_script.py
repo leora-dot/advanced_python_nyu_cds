@@ -17,6 +17,7 @@ def is_identical(iteration_num_1, iteration_num_2):
         3: "output_03_looping.txt",
         4: "output_04_built_in.txt",
         5: "output_05_itertools.txt",
+        6: "output_06_numba.txt",
         "opt_03": "output_opt_03.txt",
         "opt_05": "output_opt_05.txt"
         }
@@ -25,4 +26,4 @@ def is_identical(iteration_num_1, iteration_num_2):
     list_01, list_02 = open(filename_01).readlines(  ), open(filename_02).readlines(  )
     return list_01 == list_02
 
-print(is_identical(0, 5))
+print(is_identical(0, 6))
