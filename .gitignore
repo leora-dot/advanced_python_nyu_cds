@@ -131,3 +131,6 @@ dmypy.json
 Temp Progress File
 ~$progress_tracker.xlsx
 output_0*
+
+imgur_credentials.py
+exercise_09/images/
