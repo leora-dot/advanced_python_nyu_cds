@@ -1,4 +1,11 @@
 import timeit
+import numba
+#SUPRESS NUMBA DEPRECIATION WARNINGS
+from numba.core.errors import NumbaDeprecationWarning, NumbaPendingDeprecationWarning
+import warnings
+
+warnings.simplefilter('ignore', category=NumbaDeprecationWarning)
+warnings.simplefilter('ignore', category=NumbaPendingDeprecationWarning)
 
 """
     N-body simulation.
@@ -43,6 +50,7 @@ BODIES = {
                  -9.51592254519715870e-05 * DAYS_PER_YEAR],
                 5.15138902046611451e-05 * SOLAR_MASS)}
 
+@numba.jit()
 def combinations_r2(iterable):
     combination_list = []
     num_items = len(iterable)
@@ -56,14 +64,17 @@ def combinations_r2(iterable):
 
     return combination_list
 
+@numba.jit()
 def compute_deltas(x1, x2, y1, y2, z1, z2):
     return (x1-x2, y1-y2, z1-z2)
 
+@numba.jit()
 def compute_b(m, dt, dx, dy, dz):
     mag = dt * ((dx * dx + dy * dy + dz * dz) ** (-1.5))
     #mag = dt * (sum([d * d for d in [dx, dy, dz]]) ** (-1.5))
     return m * mag
 
+#@numba.jit()
 def update_vs(v1, v2, dt, dx, dy, dz, m1, m2, bodies_data, body1, body2):
 
     b1 = compute_b(m2, dt, dx, dy, dz) #NOT A TYPO: B1 DOES TAKE M2 & B2 DOES TAKE M1
@@ -78,6 +89,7 @@ def update_vs(v1, v2, dt, dx, dy, dz, m1, m2, bodies_data, body1, body2):
 
     return bodies_data
 
+#@numba.jit()
 def update_rs(dt, bodies_data, body):
     (r, [vx, vy, vz], m) = bodies_data[body]
     r[0] += dt * vx
@@ -86,6 +98,7 @@ def update_rs(dt, bodies_data, body):
 
     return bodies_data
 
+#@numba.jit()
 def advance(dt, loops, iterations, bodies_data):
     '''
         advance the system one timestep
@@ -107,6 +120,7 @@ def advance(dt, loops, iterations, bodies_data):
 
         print(report_energy(bodies_data))
 
+#@numba.jit()
 def report_energy(bodies_data, e=0.0):
     '''
         compute the energy and return it so that it can be printed
@@ -126,6 +140,7 @@ def report_energy(bodies_data, e=0.0):
 
     return e
 
+#@numba.jit()
 def offset_momentum(ref, bodies_data, px=0.0, py=0.0, pz=0.0):
     '''
         ref is the body in the center of the system
@@ -144,6 +159,7 @@ def offset_momentum(ref, bodies_data, px=0.0, py=0.0, pz=0.0):
 
     return bodies_data
 
+#@numba.jit()
 def nbody(loops, reference, iterations, bodies_data):
     '''
         nbody simulation
