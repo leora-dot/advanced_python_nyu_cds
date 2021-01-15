@@ -64,11 +64,11 @@ def combinations_r2(iterable):
 
     return combination_list
 
-@numba.jit()
+@numba.njit(numba.types.UniTuple(numba.float64, 3) (numba.float64, numba.float64, numba.float64, numba.float64, numba.float64, numba.float64) )
 def compute_deltas(x1, x2, y1, y2, z1, z2):
     return (x1-x2, y1-y2, z1-z2)
 
-@numba.jit()
+@numba.njit(numba.float64(numba.float64, numba.float64, numba.float64, numba.float64, numba.float64))
 def compute_b(m, dt, dx, dy, dz):
     mag = dt * ((dx * dx + dy * dy + dz * dz) ** (-1.5))
     #mag = dt * (sum([d * d for d in [dx, dy, dz]]) ** (-1.5))
