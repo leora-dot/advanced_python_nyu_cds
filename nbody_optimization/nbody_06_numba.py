@@ -50,7 +50,7 @@ BODIES = {
                  -9.51592254519715870e-05 * DAYS_PER_YEAR],
                 5.15138902046611451e-05 * SOLAR_MASS)}
 
-@numba.jit()
+@numba.njit(numba.types.List(numba.types.UniTuple(numba.types.unicode_type, 2))(numba.types.List(numba.types.unicode_type, reflected = True)))
 def combinations_r2(iterable):
     combination_list = []
     num_items = len(iterable)
