@@ -22,4 +22,9 @@ I gave up on installing and configuring Cython for the moment. This has taken up
 
 The files are as follows:
    - nbody_cython converts the program from nbody_opt_05 into Cython.
-   - nbody_cython_testing.ipynb imports the program into a jupyter notebook. 
+   - nbody_cython_testing.ipynb imports the program into a jupyter notebook.
+
+#Assignment 8 Notes:
+
+The files are as follows:
+  - nbody_06_numba has several functions compiled in numba
