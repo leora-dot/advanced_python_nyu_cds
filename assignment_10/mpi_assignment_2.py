@@ -46,3 +46,5 @@ else:
         comm.send(val, dest= rank_subsequent)
     else:
         comm.send(val, dest = 0)
+
+#RUN COMMAND: mpiexec -n 5 python mpi_assignment_2.py
