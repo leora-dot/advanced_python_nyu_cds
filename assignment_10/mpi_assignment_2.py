@@ -34,7 +34,7 @@ if rank == 0:
     comm.send(val, dest= rank_subsequent)
 
     ##PRINTING LAST VALUE
-    val = comm.recv(source= rank_max, tag = tag_val)
+    val = comm.recv(source= rank_max)
     print("Process {} recieved input = {}".format(rank, val))
 
 else:
