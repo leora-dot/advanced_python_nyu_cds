@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 from mpi4py import MPI
 comm = MPI.COMM_WORLD
@@ -33,7 +34,8 @@ def bubble_sort(arr):
 ##GENERATE ARRAY IN ROOT
 if rank == 0:
     num_partitions = comm.Get_size()
-    arr = [3, 5, 7, 4, 6, 7, 11, 9, 2, 8, 3, 2]
+    #arr = [3, 5, 7, 4, 6, 7, 11, 9, 2, 8, 3, 2]
+    arr = [random.randint(1, 500) for i in range(num_elements)]
     arr_sliced = slice_data(arr, num_partitions)
 else:
     arr_sliced = None
