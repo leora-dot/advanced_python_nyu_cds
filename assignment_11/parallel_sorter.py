@@ -31,23 +31,34 @@ def bubble_sort(arr):
 
     return arr
 
-##GENERATE ARRAY IN ROOT
+def flatten_list(list_of_lists):
+    return [val for sublist in list_of_lists for val in sublist]
+
+num_elements = 10000
+
+#Root generates an array & created partitions based on values
 if rank == 0:
     num_partitions = comm.Get_size()
     #arr = [3, 5, 7, 4, 6, 7, 11, 9, 2, 8, 3, 2]
     arr = [random.randint(1, 500) for i in range(num_elements)]
+    print("Array Generated. Generating {} partitions...".format(num_partitions))
     arr_sliced = slice_data(arr, num_partitions)
+    print("Partions generated. Sorting...")
+
 else:
     arr_sliced = None
 
-#SCATTER ARRAY TO ALL PROCESSES & SORT
+#Partitioned array is scattered & all processes perform bubble sort
 arr = comm.scatter(arr_sliced, root=0)
 arr_sort = bubble_sort(arr)
+
+#Process output is gathered to create a list of sorted arrays
 sorted = comm.gather(arr_sort, root=0)
 
-#PRINT SORTED ARRAY
+#Root flattens list & sorts array
 if rank == 0:
-    flattened = [val for sublist in sorted for val in sublist]
-    print(flattened)
+    print("Array Sorted.")
+    sorted = flatten_list(sorted)
+    print(sorted)
 
 #RUN COMMAND: mpiexec -n 4 python parallel_sorter.py
