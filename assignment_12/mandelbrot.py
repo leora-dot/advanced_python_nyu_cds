@@ -20,13 +20,12 @@ def mandel(x, y, max_iters):
     return max_iters
 
 def compute_mandel(min_x, max_x, min_y, max_y, image, iters):
-	'''
-	Calculate the mandel value for each element in the
-	image array. The real and imag variables contain a
-	value for each element of the complex space defined
-	by the X and Y boundaries (min_x, max_x) and
-	(min_y, max_y).
-	'''
+    """
+    Given the real and imaginary parts of a complex number,
+    determine if it is a candidate for membership in the
+    Mandelbrot set given a fixed number of iterations.
+    """
+
     height = image.shape[0]
     width = image.shape[1]
 
