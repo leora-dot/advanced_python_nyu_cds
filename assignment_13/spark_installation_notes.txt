@@ -1,0 +1,9 @@
+Instructions: https://towardsdatascience.com/installing-apache-pyspark-on-windows-10-f5f0c506bea1
+Instructions: https://deelesh.github.io/pyspark-windows.html
+
+Installation locations:
+  C:\spark
+  C:\Java
+
+I created this folder and downloaded winutils into it:
+  C:\spark\spark-3.0.1-bin-hadoop3.2
